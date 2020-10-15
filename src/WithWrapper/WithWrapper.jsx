@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 const WithWrapper = (views, PopularWrapper, NewWrapper) => Component => {
   return class extends React.Component {
 
+    static get displayName() {
+      const name = Component.displayName ||
+        Component.name || 'Component';
+      return `WithWrapper(${name})`;
+    }
+
     getCurrentWrapper() {
       const amountOfPopularViews = 1000;
       const amountOfNewViews = 100;
