@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import WithWrapper from './WithWrapper/WithWrapper';
 
-function New(props) {
+export function New(props) {
   return (
     <div className="wrap-item wrap-item-new">
       <span className="label">New!</span>
@@ -9,7 +10,7 @@ function New(props) {
   )
 };
 
-function Popular(props) {
+export function Popular(props) {
   return (
     <div className="wrap-item wrap-item-popular">
       <span className="label">Popular!</span>
@@ -30,29 +31,26 @@ function Article(props) {
 function Video(props) {
   return (
     <div className="item item-video">
-      <iframe src={props.url} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <iframe
+        src={props.url}
+        frameBorder="0"
+        allow="autoplay; encrypted-media"
+        allowFullScreen />
       <p className="views">Просмотров: {props.views}</p>
     </div>
   )
 };
 
 function List(props) {
-  return props.list.map(item => {
-    switch (item.type) {
-      case 'video':
-        return (
-          <Video {...item} />
-        );
+  return props.list.map((item, idx) => {
+    const { type, views } = item;
+    const CardWithWrapper = WithWrapper(views, Popular, New )(type === 'video' ? Video : Article);
 
-      case 'article':
-        return (
-          <Article {...item} />
-        );
-    }
+    return <CardWithWrapper key={idx} {...item} />;
   });
 };
 
-export default function App() {
+export function App() {
   const [list, setList] = useState([
     {
       type: 'video',
